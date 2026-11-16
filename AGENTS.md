@@ -4,7 +4,14 @@ Aplica en Claude, Cursor, Copilot, Windsurf, Continue, etc.
 
 ## Misión
 
-Transformar un **brief de cliente** (documentos + branding + imágenes) en un **sitio WordPress instalable con un clic**, con experiencia visual **exclusiva** para ese rubro y ese cliente.
+Transformar el **brief de una academia** (documentos + cursos + branding + imágenes) en un **sitio WordPress instalable con un clic**, con experiencia visual **exclusiva** para esa academia.
+
+Todos los clientes son academias, y todas las webs llevan el mismo stack:
+- Elementor Pro;
+- WooCommerce;
+- Tutor LMS Pro con certificados.
+
+Los plugins Pro son licencias de Teducas: se instalan siempre. Ver `design/wordpress-stack.md`.
 
 ## Inputs esperados (brief)
 

@@ -1,8 +1,13 @@
-# TEDUCAS Site Kit: una web distinta para cada cliente
+# TEDUCAS Site Kit: una web distinta para cada academia
 
-Le das a Claude lo que te mandó el cliente: documentos, manual de marca, logos y fotos, en cualquier formato. Claude diseña una web **única** para ese cliente y te la entrega lista para instalar en WordPress **con un clic**.
+Le das a Claude lo que te mandó la academia: documentos, cursos, manual de marca, logos y fotos, en cualquier formato. Claude diseña una web **única** para esa academia y te la entrega lista para instalar en WordPress **con un clic**.
 
-No es una plantilla con colores cambiados: cada web tiene su propia estructura, tipografía y ambiente.
+No es una plantilla con colores cambiados: cada web tiene su propia estructura, tipografía y ambiente. Y todas llevan el stack de Teducas:
+- **Elementor Pro**;
+- tienda con **WooCommerce**;
+- plataforma de cursos con **Tutor LMS Pro** y certificados.
+
+Todo queda configurado para cobrar.
 
 ---
 
@@ -14,6 +19,8 @@ No es una plantilla con colores cambiados: cada web tiene su propia estructura, 
 - Conexión a internet.
 
 Nada más: lo demás (Node.js y WordPress de prueba) lo instala el kit.
+
+Para el WordPress de cada academia usarás además los **plugins de pago de Teducas**: Elementor Pro, Tutor LMS Pro y Tutor LMS Certificate Builder. Son licencias de la empresa: la academia no compra nada y se instalan siempre. No están en este repositorio, que es público: te los da Teducas.
 
 ## Instalación (una vez)
 
@@ -30,32 +37,36 @@ Nada más: lo demás (Node.js y WordPress de prueba) lo instala el kit.
 
 Claude revisa tu equipo, instala lo que falte y te dice cuándo está todo listo. La primera vez tarda unos minutos.
 
-## Crear la web de un cliente
+## Crear la web de una academia
 
-1. Dentro de la carpeta `proyectos`, crea una carpeta con el **nombre del cliente**.
-2. Copia ahí **todo lo que te mandó el cliente**, tal como te llegó: Word, PDF, manual de marca, logos, fotos o un ZIP. No hace falta renombrar ni ordenar nada.
+1. Dentro de la carpeta `proyectos`, crea una carpeta con el **nombre de la academia**.
+2. Copia ahí **todo lo que te mandó**, tal como te llegó: Word, PDF, manual de marca, logos, fotos, el listado de cursos o un ZIP. No hace falta renombrar ni ordenar nada.
 3. Escribe en Claude Code:
 
-   > Crea la web de *nombre del cliente*
+   > Crea la web de *nombre de la academia*
 
 Claude:
 - ordena el material y te dice qué falta (por ejemplo, el teléfono o fotos del equipo);
 - te explica la idea de la web y te enseña una **maqueta** en la vista previa: pide cambios con tus palabras;
-- si el cliente **vende cursos**, la web incluye tienda (WooCommerce) y plataforma de cursos (Tutor LMS), ya configuradas para cobrar;
+- deja preparadas la tienda y la plataforma de cursos sin que lo pidas: en dólares (o la moneda de la academia), con cuenta obligatoria para comprar, pedidos automáticos y certificados;
 - la prueba en un **WordPress de prueba** dentro de tu equipo;
 - te entrega el archivo `site-maestro.zip` y los pasos para instalarlo.
 
-## Instalar la web en el WordPress del cliente
+## Instalar la web en el WordPress de la academia
+
+Siempre en este orden:
 
 1. **Apariencia → Temas:** instala y activa **Hello Elementor**.
-2. **Plugins → Añadir nuevo:** instala y activa **Elementor**.
-3. **Plugins → Añadir nuevo → Subir plugin:** sube `site-maestro.zip` y actívalo.
-4. Menú **Site Maestro → Instalar sitio completo**.
-5. Cuando diga que todo está correcto, puedes borrar el plugin Site Maestro: la web se queda.
+2. **Plugins → Añadir nuevo:** instala y activa **Elementor**. Después, en **Subir plugin**, sube y activa **Elementor Pro** (el de Teducas).
+3. **Plugins → Añadir nuevo:** instala y activa **WooCommerce** y luego **Tutor LMS**.
+4. **Subir plugin:** sube y activa **Tutor LMS Pro** y **Tutor LMS Certificate Builder** (los de Teducas).
+5. Los asistentes de configuración que aparecen se pueden **saltar**: Site Maestro configura todo.
+6. **Subir plugin:** sube `site-maestro.zip`, actívalo y pulsa **Site Maestro → Instalar sitio completo**. Si falta algún plugin, el registro te dice cuál.
+7. Cuando diga que todo está correcto, puedes borrar el plugin Site Maestro: la web se queda.
+8. **Pagos:** instala *WooCommerce Stripe Gateway* y conéctalo con la cuenta de la academia (WooCommerce → Ajustes → Pagos).
+9. **Cursos:** crea los cursos en Tutor LMS y ponles precio. El producto de la tienda aparece solo: no lo crees a mano.
 
 Los textos y las imágenes se editan después en Elementor, como en cualquier web.
-
-**Academias que venden cursos:** antes de Site Maestro hay que instalar WooCommerce y Tutor LMS; Claude te da los pasos exactos. Al final se conecta la pasarela de pago y se crean los cursos en Tutor.
 
 ## Si algo no sale
 
@@ -78,7 +89,7 @@ Para **actualizar el kit**, descarga el ZIP otra vez y copia tu carpeta `proyect
 ├── prompts/PIPELINE.md       ← fases de generación
 ├── engine/site-maestro/      ← plugin WordPress genérico (instalación con un clic)
 ├── tools/                    ← setup, servidor de mockups, Playground, empaquetado
-└── proyectos/                ← una carpeta por cliente (no se sube a git)
+└── proyectos/                ← una carpeta por academia (no se sube a git)
 ```
 
 ### Principio

@@ -51,7 +51,11 @@ Si quitando el logo la home podría confundirse con otro proyecto del kit o con 
 
 ## Stack de entrega
 
-- WordPress + Hello Elementor + Elementor (Pro si hay licencia)
+- **Clientes:** todos son academias, y todas las webs llevan el mismo stack.
+- **WordPress:** Hello Elementor, Elementor y **Elementor Pro**.
+- **Tienda:** **WooCommerce**.
+- **Cursos:** **Tutor LMS** y **Tutor LMS Pro**, con Certificate Builder.
+- **Licencias:** los plugins Pro son licencias de Teducas. El cliente no compra nada y se instalan siempre (ver `design/wordpress-stack.md`).
 - Plugin instalador: `engine/site-maestro` (payload-driven)
 - Textos e imágenes editables desde Elementor / Medios
 - Runtime MU-plugin para poder borrar el instalador sin perder estilos

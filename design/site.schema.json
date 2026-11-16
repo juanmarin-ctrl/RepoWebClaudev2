@@ -39,7 +39,7 @@
     "requires": {
       "type": "array",
       "items": { "type": "string", "enum": ["elementor-pro", "woocommerce", "tutor", "tutor-pro"] },
-      "description": "Plugins que necesita el payload. El instalador avisa si alguno no está activo. Ver design/wordpress-stack.md."
+      "description": "Plugins que necesita el payload. Para TEDUCAS siempre [\"elementor-pro\", \"woocommerce\", \"tutor\", \"tutor-pro\"]. El instalador avisa si alguno no está activo. Ver design/wordpress-stack.md."
     },
     "wordpress": {
       "type": "object",

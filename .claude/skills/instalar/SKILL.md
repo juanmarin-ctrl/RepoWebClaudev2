@@ -45,4 +45,4 @@ WordPress local (`wp-playground`) no se prueba ahora: se usa al crear la primera
 ## 6. Cierre
 Responde con un resumen corto, sin tablas técnicas:
 - Qué quedó instalado y si falta algo.
-- Cómo empezar: «Crea una carpeta con el nombre del cliente dentro de `proyectos`, copia ahí todo lo que te mandó (en cualquier formato) y escríbeme: *Crea la web de <cliente>*».
+- Cómo empezar: «Crea una carpeta con el nombre de la academia dentro de `proyectos`, copia ahí todo lo que te mandó (en cualquier formato) y escríbeme: *Crea la web de <academia>*».

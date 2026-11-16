@@ -101,9 +101,10 @@ engine/site-maestro/payload/
 Y copiar el mismo payload a `proyectos/<slug>/payload/` como respaldo del cliente.
 
 Stack y ajustes de WordPress: sigue `design/wordpress-stack.md`.
-- **`requires`:** según el tipo de web (informativa, academia con cursos o tienda).
-- **Bloque `wordpress`:** con los valores estándar de TEDUCAS (idioma, zona horaria, comentarios, contenido de ejemplo).
-- **Academias que venden cursos:** además los bloques `woocommerce` y `tutor`. No metas las páginas que crea Tutor (panel, registro).
+Todos los clientes son academias con el mismo stack (Elementor Pro, WooCommerce y Tutor LMS Pro):
+- **`requires`:** siempre `["elementor-pro", "woocommerce", "tutor", "tutor-pro"]`.
+- **Bloques `wordpress`, `woocommerce` y `tutor`:** siempre, con los valores estándar de TEDUCAS.
+- **Páginas de Tutor:** no metas las que crea Tutor (panel, registro).
 - **Templates:** primero widgets nativos de Elementor. Usa la skill `wordpress-elementor` para las claves de los controles.
 
 Tokens de media en JSON:
@@ -135,11 +136,14 @@ Genera `proyectos/<slug>/site-maestro.zip` con `site-maestro/site-maestro.php` e
 
 En WordPress:
 
-1. Tema Hello Elementor  
-2. Plugin Elementor (+ Pro si hay)  
-3. Subir `site-maestro.zip` → Activar  
-4. Menú **Site Maestro** → **Instalar sitio completo**  
-5. Verificar runtime → se puede eliminar el instalador  
+Sigue la sección 5 de `design/wordpress-stack.md`. Es siempre el mismo orden:
+1. Hello Elementor.
+2. Elementor y Elementor Pro (de Teducas).
+3. WooCommerce.
+4. Tutor LMS, Tutor LMS Pro y Certificate Builder (de Teducas).
+5. `site-maestro.zip` → **Instalar sitio completo**.
+6. Stripe.
+7. Crear los cursos con precio.
 
 Prueba local antes del hosting real: `node tools/playground.mjs` → `http://localhost:9400` (servidor `wp-playground` de `.claude/launch.json`).
 
