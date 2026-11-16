@@ -109,5 +109,5 @@ if (flags.has('--warm')) {
 console.log('\nSite Kit — verificación\n');
 for (const [s, k, v] of results) console.log(`${s} ${k.padEnd(22)} ${v}`);
 const failed = results.some(([s]) => s === '✘');
-console.log(failed ? '\nHay requisitos sin cumplir (✘). Corrígelos y vuelve a ejecutar.' : '\nTodo listo. Copia los documentos del cliente en proyectos/<cliente>/ y pide en Claude Code: "Crea la web de <cliente>".');
+console.log(failed ? '\nHay requisitos sin cumplir (✘). Corrígelos y vuelve a ejecutar.' : '\nTodo listo. Copia el material de la academia en proyectos/<academia>/ y pide en Claude Code: "Crea la web de <academia>".');
 process.exit(failed ? 1 : 0);
