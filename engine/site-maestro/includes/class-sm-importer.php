@@ -55,12 +55,13 @@ class SM_Importer {
 		$this->log('Elementor: ' . (defined('ELEMENTOR_VERSION') ? ELEMENTOR_VERSION : 'NO'));
 		$this->log('Elementor Pro: ' . (class_exists('\\ElementorPro\\Plugin') ? 'SI' : 'NO'));
 
-		if (in_array('elementor-pro', isset($this->site['requires']) ? (array) $this->site['requires'] : array(), true) && !class_exists('\\ElementorPro\\Plugin')) {
-			$this->log('ERROR: este sitio usa widgets de Elementor Pro (Nav Menu, Formulario). Activa Elementor Pro y vuelve a instalar.');
-		}
+		$this->check_requirements();
 
 		$this->bootstrap_wp_files();
 		$this->ensure_elementor_ready();
+		$this->configure_wordpress();
+		$this->configure_woocommerce();
+		$this->configure_tutor();
 
 		$images = $this->import_images();
 		$templates = $this->import_templates();
@@ -125,6 +126,167 @@ class SM_Importer {
 		// La tipografía y el color vienen del branding.css del payload, no del kit por defecto.
 		update_option('elementor_disable_color_schemes', 'yes');
 		update_option('elementor_disable_typography_schemes', 'yes');
+	}
+
+	/** Avisa de los plugins que pide el payload ("requires") y no están activos. */
+	private function check_requirements() {
+		$requires = isset($this->site['requires']) ? (array) $this->site['requires'] : array();
+		$checks = array(
+			'elementor-pro' => array(class_exists('\\ElementorPro\\Plugin'), 'Elementor Pro (widgets Nav Menu y Formulario)'),
+			'woocommerce' => array(class_exists('WooCommerce'), 'WooCommerce (pagos de los cursos)'),
+			'tutor' => array(function_exists('tutor') || defined('TUTOR_VERSION'), 'Tutor LMS (cursos)'),
+			'tutor-pro' => array(defined('TUTOR_PRO_VERSION'), 'Tutor LMS Pro (certificados, informes, tareas)'),
+		);
+		foreach ($requires as $req) {
+			if (isset($checks[$req]) && !$checks[$req][0]) {
+				$this->log('ERROR: falta ' . $checks[$req][1] . '. Instálalo y actívalo, y vuelve a pulsar «Instalar sitio completo».');
+			}
+		}
+	}
+
+	/** Bloque opcional "wordpress" del payload: idioma, zona horaria, comentarios y contenido de ejemplo. */
+	private function configure_wordpress() {
+		$wp = isset($this->site['wordpress']) && is_array($this->site['wordpress']) ? $this->site['wordpress'] : array();
+		if (!$wp) {
+			return;
+		}
+		if (!empty($wp['language']) && get_locale() !== $wp['language']) {
+			require_once ABSPATH . 'wp-admin/includes/translation-install.php';
+			$installed = wp_download_language_pack($wp['language']);
+			if ($installed) {
+				update_option('WPLANG', $installed);
+				$this->log('Idioma del sitio: ' . $installed);
+			} else {
+				$this->log('AVISO: no se pudo descargar el idioma ' . $wp['language'] . ' (se mantiene ' . get_locale() . ').');
+			}
+		}
+		if (!empty($wp['timezone']) && in_array($wp['timezone'], timezone_identifiers_list(), true)) {
+			update_option('timezone_string', $wp['timezone']);
+			update_option('gmt_offset', '');
+			$this->log('Zona horaria: ' . $wp['timezone']);
+		}
+		if (isset($wp['comments']) && $wp['comments'] === false) {
+			update_option('default_comment_status', 'closed');
+			update_option('default_ping_status', 'closed');
+			$this->log('Comentarios cerrados por defecto');
+		}
+		if (!empty($wp['remove_sample_content'])) {
+			// Solo si nunca se editaron: no borra contenido real del cliente.
+			$targets = array('post' => array('hello-world', 'hola-mundo'), 'page' => array('sample-page', 'pagina-ejemplo'));
+			foreach ($targets as $type => $slugs) {
+				foreach ($slugs as $slug) {
+					$p = get_page_by_path($slug, OBJECT, $type);
+					if ($p && $p->post_modified_gmt === $p->post_date_gmt) {
+						wp_delete_post($p->ID, true);
+						$this->log('Borrado contenido de ejemplo: ' . $slug);
+					}
+				}
+			}
+		}
+	}
+
+	/** Bloque opcional "woocommerce": moneda, país y asistente inicial saltado. */
+	private function configure_woocommerce() {
+		$wc = isset($this->site['woocommerce']) && is_array($this->site['woocommerce']) ? $this->site['woocommerce'] : array();
+		if (!$wc) {
+			return;
+		}
+		if (!class_exists('WooCommerce')) {
+			$this->log('AVISO: el payload trae ajustes de WooCommerce pero WooCommerce no está activo.');
+			return;
+		}
+		if (!empty($wc['currency'])) {
+			update_option('woocommerce_currency', strtoupper($wc['currency']));
+		}
+		if (!empty($wc['country'])) {
+			update_option('woocommerce_default_country', $wc['country']);
+		}
+		update_option('woocommerce_onboarding_profile', array('skipped' => true));
+		$user = wp_get_current_user();
+		if ($user && $user->ID) {
+			update_user_meta($user->ID, 'woocommerce_task_list_hidden', 'yes');
+		}
+		$this->log('WooCommerce: ' . get_option('woocommerce_currency') . ' / ' . get_option('woocommerce_default_country'));
+	}
+
+	/**
+	 * Bloque opcional "tutor": Tutor LMS cobrando con WooCommerce.
+	 * Trampas conocidas (ver design/wordpress-stack.md):
+	 *  - el motor de pago se guarda como 'wc', NO 'woocommerce' (con 'woocommerce' Tutor no ofrece cursos de pago);
+	 *  - los interruptores de Tutor se guardan como 'on'/'off', no 1/0 (con 1 funciona pero el panel lo muestra apagado);
+	 *  - el addon tutor-certificate es requisito de Tutor LMS Certificate Builder.
+	 */
+	private function configure_tutor() {
+		$t = isset($this->site['tutor']) && is_array($this->site['tutor']) ? $this->site['tutor'] : array();
+		if (!$t) {
+			return;
+		}
+		if (!function_exists('tutor_utils') && !defined('TUTOR_VERSION')) {
+			$this->log('AVISO: el payload trae ajustes de Tutor LMS pero Tutor no está activo.');
+			return;
+		}
+		$set = function ($key, $value) {
+			if (function_exists('update_tutor_option')) {
+				update_tutor_option($key, $value);
+			} else {
+				$opts = (array) get_option('tutor_option', array());
+				$opts[$key] = $value;
+				update_option('tutor_option', $opts);
+			}
+		};
+		$onoff = function ($v) {
+			return $v ? 'on' : 'off';
+		};
+		$sell_with_wc = !isset($t['sell_with_woocommerce']) || $t['sell_with_woocommerce'];
+		if ($sell_with_wc) {
+			if (class_exists('WooCommerce')) {
+				$set('monetize_by', 'wc');
+				$set('tutor_woocommerce_order_auto_complete', 'on');
+				$set('tutor_woocommerce_invoice', 'on');
+				$set('wc_automatic_order_complete_redirect_to_courses', 'on');
+				$this->log('Tutor LMS cobra con WooCommerce (monetize_by=wc); el producto de cada curso lo crea Tutor al ponerle precio.');
+			} else {
+				$this->log('AVISO: Tutor debería cobrar con WooCommerce, pero WooCommerce no está activo.');
+			}
+		}
+		if (isset($t['guest_checkout'])) {
+			$set('enable_guest_course_cart', $onoff($t['guest_checkout']));
+		}
+		if (!empty($t['certificates'])) {
+			$set('enable_certificate_showcase', 'on');
+			if (!empty($t['certificate_title'])) {
+				$set('certificate_showcase_title', (string) $t['certificate_title']);
+			}
+			if (!empty($t['certificate_text'])) {
+				$set('certificate_showcase_desc', (string) $t['certificate_text']);
+			}
+		}
+		// Addons de Tutor Pro (solo tienen efecto si Tutor Pro está instalado).
+		$addons = isset($t['pro_addons']) ? (array) $t['pro_addons'] : array();
+		if (!empty($t['certificates']) && !in_array('tutor-certificate', $addons, true)) {
+			$addons[] = 'tutor-certificate';
+		}
+		if ($addons) {
+			$map = array(
+				'tutor-certificate' => 'tutor-pro/addons/tutor-certificate/tutor-certificate.php',
+				'tutor-email' => 'tutor-pro/addons/tutor-email/tutor-email.php',
+				'tutor-report' => 'tutor-pro/addons/tutor-report/tutor-report.php',
+				'course-attachments' => 'tutor-pro/addons/tutor-course-attachments/tutor-course-attachments.php',
+				'course-preview' => 'tutor-pro/addons/tutor-course-preview/tutor-course-preview.php',
+				'gradebook' => 'tutor-pro/addons/gradebook/gradebook.php',
+				'enrollments' => 'tutor-pro/addons/enrollments/enrollments.php',
+				'prerequisites' => 'tutor-pro/addons/tutor-prerequisites/tutor-prerequisites.php',
+				'assignments' => 'tutor-pro/addons/tutor-assignments/tutor-assignments.php',
+			);
+			$cfg = (array) get_option('tutor_addons_config', array());
+			foreach ($addons as $a) {
+				if (isset($map[$a])) {
+					$cfg[$map[$a]]['is_enable'] = 1;
+				}
+			}
+			update_option('tutor_addons_config', $cfg);
+			$this->log('Addons de Tutor Pro activados en la configuración: ' . implode(', ', $addons) . (defined('TUTOR_PRO_VERSION') ? '' : ' (Tutor Pro no está instalado: sin efecto por ahora)'));
+		}
 	}
 
 	private function import_images() {

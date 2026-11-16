@@ -60,7 +60,7 @@ async function ensureTaste() {
 }
 await ensureTaste();
 const skills = existsSync(skillsDir) ? readdirSync(skillsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name) : [];
-for (const name of ['design-taste-frontend', 'impeccable']) {
+for (const name of ['design-taste-frontend', 'impeccable', 'wordpress-elementor']) {
   const f = join(skillsDir, name, 'SKILL.md');
   if (name === TASTE.name && !existsSync(f)) continue; // ya reportado arriba
   if (!existsSync(f)) { fail(`Skill ${name}`, 'falta .claude/skills/' + name + '/SKILL.md'); continue; }

@@ -100,6 +100,12 @@ engine/site-maestro/payload/
 
 Y copiar el mismo payload a `proyectos/<slug>/payload/` como respaldo del cliente.
 
+Stack y ajustes de WordPress: sigue `design/wordpress-stack.md`.
+- **`requires`:** según el tipo de web (informativa, academia con cursos o tienda).
+- **Bloque `wordpress`:** con los valores estándar de TEDUCAS (idioma, zona horaria, comentarios, contenido de ejemplo).
+- **Academias que venden cursos:** además los bloques `woocommerce` y `tutor`. No metas las páginas que crea Tutor (panel, registro).
+- **Templates:** primero widgets nativos de Elementor. Usa la skill `wordpress-elementor` para las claves de los controles.
+
 Tokens de media en JSON:
 
 ```text

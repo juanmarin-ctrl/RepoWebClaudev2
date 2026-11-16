@@ -8,6 +8,7 @@ Claude Code carga automáticamente las skills de esta carpeta al abrir el repo (
 | `crear-web` | — | propia del kit | en el repo | Flujo «Crea la web de <cliente>» |
 | `design-taste-frontend` | tasteskill v2 (commit `af8a897`) | MIT, [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) | la **descarga el instalador** (`tools/setup.mjs`) | Dirección de arte del concepto y del mockup |
 | `impeccable` | 4.8.0 | Apache 2.0, [pbakaus/impeccable](https://github.com/pbakaus/impeccable) (ver `LICENSE` y `NOTICE.md`) | en el repo | Pulido, crítica y auditoría del mockup |
+| `wordpress-elementor` | — | MIT, Diego N. (@500Byte) (ver su `LICENSE` y `README.md`) | en el repo | Templates JSON de Elementor correctos: controles, contenedores, colores globales, formularios. Sus partes de EMCP, DDEV y plugins propios no aplican al kit. |
 
 **`design-taste-frontend`:**
 - No se sube al repo (está en `.gitignore`). El instalador la descarga fijada al commit probado con el kit.

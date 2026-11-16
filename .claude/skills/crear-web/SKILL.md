@@ -33,7 +33,7 @@ Después de la fase 1, cuéntale qué falta en una lista corta en lenguaje norma
 3. **Pregunta:** «¿Te gusta o cambio algo?». Acepta cambios dichos con sus palabras («más aire en la portada», «el azul más oscuro», «quita esa sección») y vuelve a enseñarlo.
 
 ## 5. WordPress de prueba
-- Genera el payload (fase 4).
+- Genera el payload (fase 4) siguiendo `design/wordpress-stack.md`. Si el cliente vende cursos, la web lleva WooCommerce y Tutor LMS: díselo en una frase («como vende cursos, la web incluye tienda y plataforma de cursos»).
 - Arranca `wp-playground` y abre `http://localhost:9400` en la vista previa. Es un WordPress que solo existe en su equipo, con usuario `admin` y contraseña `password`.
 - Pulsa tú **Site Maestro → Instalar sitio completo** y enséñale el resultado.
 
@@ -45,4 +45,8 @@ Después de la fase 1, cuéntale qué falta en una lista corta en lenguaje norma
    3. En **Plugins → Añadir nuevo → Subir plugin**, sube `site-maestro.zip` y actívalo.
    4. En el menú **Site Maestro**, pulsa **Instalar sitio completo**.
    5. Cuando diga que todo está correcto, puedes borrar el plugin Site Maestro: la web se queda.
+   **Academia que vende cursos (Tutor LMS):** usa en su lugar las instrucciones de la sección 5 de `design/wordpress-stack.md`, también en lenguaje sencillo:
+   - instalar WooCommerce y Tutor LMS **antes** de Site Maestro (los asistentes de ambos se pueden saltar);
+   - conectar la pasarela de pago;
+   - crear los cursos en Tutor y ponerles precio: el producto de la tienda se crea solo.
 3. Recuérdale que los textos y las imágenes se editan después en Elementor y en Medios, como en cualquier web.

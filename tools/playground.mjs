@@ -22,6 +22,21 @@ if (existsSync(join(repo, 'TeducasCore', 'teducas-core.php'))) {
   console.log('TeducasCore detectado: se montará y activará.');
 }
 
+// Si la web activa necesita WooCommerce o Tutor LMS (versiones gratuitas de wordpress.org), se instalan también.
+let requires = [];
+try {
+  requires = JSON.parse(readFileSync(join(repo, 'engine', 'site-maestro', 'payload', 'site.json'), 'utf8').replace(/^﻿/, '')).requires || [];
+} catch {}
+const at = blueprint.steps.findIndex((s) => s.step === 'activatePlugin');
+for (const slug of ['woocommerce', 'tutor']) {
+  if (!requires.includes(slug)) continue;
+  blueprint.steps.splice(at, 0, { step: 'installPlugin', pluginData: { resource: 'wordpress.org/plugins', slug }, options: { activate: true } });
+  console.log(`La web usa ${slug}: se instalará en el WordPress de prueba.`);
+}
+if (requires.some((r) => r === 'elementor-pro' || r === 'tutor-pro')) {
+  console.log('Aviso: Elementor Pro / Tutor Pro son de pago y no se instalan en la prueba local.');
+}
+
 const bpRel = 'tools/wp-playground/.blueprint.generated.json';
 writeFileSync(join(repo, bpRel), JSON.stringify(blueprint, null, 2));
 

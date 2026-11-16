@@ -38,8 +38,42 @@
     },
     "requires": {
       "type": "array",
-      "items": { "type": "string" },
-      "description": "Dependencias del payload, ej. [\"elementor-pro\"]. El instalador avisa si faltan."
+      "items": { "type": "string", "enum": ["elementor-pro", "woocommerce", "tutor", "tutor-pro"] },
+      "description": "Plugins que necesita el payload. El instalador avisa si alguno no está activo. Ver design/wordpress-stack.md."
+    },
+    "wordpress": {
+      "type": "object",
+      "description": "Ajustes base del WordPress (solo se aplica lo que venga). Valores estándar en design/wordpress-stack.md.",
+      "properties": {
+        "language": { "type": "string", "description": "Locale, ej. es_MX. Descarga el paquete de idioma." },
+        "timezone": { "type": "string", "description": "Zona horaria IANA, ej. America/New_York" },
+        "comments": { "type": "boolean", "description": "false = comentarios cerrados por defecto" },
+        "remove_sample_content": { "type": "boolean", "description": "Borra «Hola mundo» y «Página de ejemplo» si nunca se editaron" }
+      }
+    },
+    "woocommerce": {
+      "type": "object",
+      "description": "Solo si la web vende (p. ej. cursos con Tutor LMS). Requiere WooCommerce activo.",
+      "properties": {
+        "currency": { "type": "string", "description": "ISO 4217, ej. USD" },
+        "country": { "type": "string", "description": "País:estado de la tienda, ej. US:FL" }
+      }
+    },
+    "tutor": {
+      "type": "object",
+      "description": "Solo si la web tiene cursos con Tutor LMS. Requiere Tutor LMS activo.",
+      "properties": {
+        "sell_with_woocommerce": { "type": "boolean", "default": true, "description": "Tutor cobra con WooCommerce (monetize_by=wc)" },
+        "guest_checkout": { "type": "boolean", "description": "false = hace falta cuenta para comprar un curso" },
+        "certificates": { "type": "boolean", "description": "Muestra el certificado en la página del curso y activa el addon tutor-certificate (Pro)" },
+        "certificate_title": { "type": "string" },
+        "certificate_text": { "type": "string" },
+        "pro_addons": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["tutor-certificate", "tutor-email", "tutor-report", "course-attachments", "course-preview", "gradebook", "enrollments", "prerequisites", "assignments"] },
+          "description": "Addons de Tutor Pro a activar (sin efecto si no está Tutor Pro)"
+        }
+      }
     },
     "media_token": {
       "type": "string",

@@ -41,6 +41,7 @@ Claude revisa tu equipo, instala lo que falte y te dice cuándo está todo listo
 Claude:
 - ordena el material y te dice qué falta (por ejemplo, el teléfono o fotos del equipo);
 - te explica la idea de la web y te enseña una **maqueta** en la vista previa: pide cambios con tus palabras;
+- si el cliente **vende cursos**, la web incluye tienda (WooCommerce) y plataforma de cursos (Tutor LMS), ya configuradas para cobrar;
 - la prueba en un **WordPress de prueba** dentro de tu equipo;
 - te entrega el archivo `site-maestro.zip` y los pasos para instalarlo.
 
@@ -53,6 +54,8 @@ Claude:
 5. Cuando diga que todo está correcto, puedes borrar el plugin Site Maestro: la web se queda.
 
 Los textos y las imágenes se editan después en Elementor, como en cualquier web.
+
+**Academias que venden cursos:** antes de Site Maestro hay que instalar WooCommerce y Tutor LMS; Claude te da los pasos exactos. Al final se conecta la pasarela de pago y se crean los cursos en Tutor.
 
 ## Si algo no sale
 

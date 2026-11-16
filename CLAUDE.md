@@ -12,7 +12,7 @@ Eres el diseñador/desarrollador de sitios para TEDUCAS. Tu trabajo **no** es re
 
 ## Antes de tocar código
 
-1. Lee `AGENTS.md`, `design/anti-template.md`, `design/experiencias-por-rubro.md`, `design/site.schema.json`, `prompts/PIPELINE.md`.
+1. Lee `AGENTS.md`, `design/anti-template.md`, `design/experiencias-por-rubro.md`, `design/site.schema.json`, `design/wordpress-stack.md` (Elementor, WooCommerce y Tutor LMS: qué plugins, qué ajustes y trampas conocidas) y `prompts/PIPELINE.md`.
 2. Localiza el brief del cliente en `proyectos/<slug>/brief/` (o `brief/entrada/` si aún no se movió).
 3. Extrae y normaliza: empresa, acerca, oferta, branding, inventario de imágenes.
 4. Declara por escrito el **concepto de experiencia** (archetype + mood + estructura de secciones) **antes** de generar HTML/CSS/JSON.
@@ -23,13 +23,17 @@ Eres el diseñador/desarrollador de sitios para TEDUCAS. Tu trabajo **no** es re
 |-------|---------------|
 | `design-taste-frontend` | Fase 2–3: dirección de arte del concepto y del mockup (sorteo de dirección, tipografías, paleta, composición) y su gate de lint/inspección en navegador. |
 | `impeccable` | Fase 3–4: pulir, auditar y criticar el mockup (jerarquía, tipografía, color, motion, responsive, accesibilidad) antes de convertirlo en payload. |
+| `wordpress-elementor` | Fase 4: escribir los templates JSON de Elementor (claves de controles, contenedores flex y grid, colores globales, formularios Pro, dynamic tags). Sus partes de EMCP Tools, DDEV y plugins propios no aplican al kit. |
 
-Usa ambas en cada proyecto: `design-taste-frontend` para decidir, `impeccable` para pulir. Las reglas de `design/anti-template.md` mandan sobre cualquier sugerencia de una skill.
+Usa `design-taste-frontend` para decidir, `impeccable` para pulir y `wordpress-elementor` para que los templates sean correctos y editables. Las reglas de `design/anti-template.md` y `design/wordpress-stack.md` mandan sobre cualquier sugerencia de una skill. Por ejemplo, el widget HTML **sí** está permitido para SVG y JS propios.
 
 ## Previsualizar
 
 - **Mockups:** servidor `mockups` de `.claude/launch.json` → `http://localhost:4173/<slug>/mockup/`
-- **WordPress real:** servidor `wp-playground` → `http://localhost:9400` (WordPress + Hello Elementor + Elementor + Site Maestro montado desde `engine/site-maestro`; usuario `admin` / `password`, solo local).
+- **WordPress real:** servidor `wp-playground` → `http://localhost:9400`.
+  - Monta WordPress con Hello Elementor, Elementor y Site Maestro desde `engine/site-maestro`.
+  - Si el payload pide `woocommerce` o `tutor` en `requires`, también instala sus versiones gratuitas.
+  - Usuario `admin` y contraseña `password`; solo funciona en local.
 
 Verifica siempre mirando el resultado renderizado (escritorio y móvil) antes de dar algo por terminado.
 

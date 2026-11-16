@@ -57,4 +57,7 @@ Los `proyectos/<otro-cliente>/` que existan en tu copia sirven solo para **aleja
 En `.claude/skills/` hay dos skills de diseño:
 - `design-taste-frontend` (dirección de arte): la descarga `node tools/setup.mjs`.
 - `impeccable` (pulido y auditoría): viene en el repo.
+- `wordpress-elementor` (templates JSON de Elementor correctos y editables): viene en el repo.
+
+Stack WordPress (Elementor, WooCommerce y Tutor LMS), ajustes estándar y trampas conocidas: `design/wordpress-stack.md`.
 Claude Code las carga solo. En otros entornos (Cursor, Copilot…) lee directamente `.claude/skills/<nombre>/SKILL.md` cuando llegues a la fase de diseño.
